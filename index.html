@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terminal Game</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="terminal" onmousedown="return false;">
+        <div id="output"></div>
+        <div class="input-line">
+            <span id="prompt">$</span>
+            <span id="input-area"></span>
+            <span id="cursor">█</span>
+            <input type="text" id="user_input" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+        </div>
+    </div>
+
+    <script src="map.js"></script>
+    <script src="game.js"></script>
+</body>
+</html>
