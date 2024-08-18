@@ -2,7 +2,7 @@ window.onload = function() {
     const userInput = document.getElementById('user_input');
     const inputArea = document.getElementById('input-area');
     const outputDiv = document.getElementById('output');
-    const typingSpeed = 50; // Speed of typing effect in milliseconds
+    const typingSpeed = 1; // Speed of typing effect in milliseconds
 
     // Initialize Map instance
     const map = new Map();
