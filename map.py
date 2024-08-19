@@ -2,7 +2,7 @@ import numpy as np
 
 class Map:
     def __init__(self):
-        self.position = [50, 50]
+        self.position = [0, 0]
         self.direction = 'south'
 
     def turn(self, direction: str):
@@ -34,9 +34,9 @@ class Map:
             self.position[0] += steps
         elif self.direction == 'west':
             self.position[1] += steps
-        if self.position[0] < 0 or self.position[0] > 100 or self.position[1] < 0 or self.position[0] > 100:
-        print('You have fallen off the map. You will respawn at start.')
-        self.__init__()
+        if abs(self.position[0]) > 50 or abs(self.position[1]) > 50:
+            print('You have fallen off the map. You will respawn at start.')
+            self.__init__()
 
     def get(self):
         states = []
@@ -45,11 +45,19 @@ class Map:
             if not np.random.randint(0, 10):
                 states.append('bottle')
         elif self.position[0] >= 94 and self.position[1] >= 94:
-            if self.position[0] == 94 or self.position[1] == 94:
-                if self.position == [94, 97]:
-                    states.append('house door')
-                else:
-                    states.append('house wall')
-            else: states.append('inside house')
+            states.append(self.check_house())
+        return states
+
+
+    def check_house(self):
+        states = []
+        if self.position[0] == 94 or self.position[1] == 94:
+            if self.position == [94, 97]:
+                states.append('house door')
+            else:
+                states.append('house wall')
+        else: 
+            states.append('inside house')
+        return *states
 
         

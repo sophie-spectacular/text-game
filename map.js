@@ -1,11 +1,11 @@
 class Map {
     constructor() {
-        this.position = [50, 50];
+        this.position = [0, 0];
         this.direction = 'south';
     }
 
     reset() {
-        this.position = [50, 50];
+        this.position = [0, 0];
         this.direction = 'south';
     }
 

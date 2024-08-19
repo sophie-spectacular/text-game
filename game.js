@@ -2,98 +2,82 @@ window.onload = function() {
     const userInput = document.getElementById('user_input');
     const inputArea = document.getElementById('input-area');
     const outputDiv = document.getElementById('output');
-    const typingSpeed = 1; // Speed of typing effect in milliseconds
-
-    // Initialize Map instance
+    const typingSpeed = 1;
     const map = new Map();
-
-    // State variable to track if typing is in progress
     let isTyping = false;
-
-    // Automatically focus the hidden input field
     userInput.focus();
 
-    // Print the initial greeting message with typing effect
-    typeMessage('Hello, World!', typingSpeed, () => {
-        // Allow user to input after the greeting message is fully printed
+    typeMessage('hello, worldly traveler. you have landed at sophie\'s beach. feel free to explore! type "help"', typingSpeed, () => {
         userInput.addEventListener('keydown', handleKeyPress);
     });
-
     function handleKeyPress(event) {
         if (isTyping) {
-            // Prevent input if typing is in progress
             event.preventDefault();
             return;
         }
 
         if (event.key === 'Enter') {
-            const command = inputArea.textContent.trim(); // Get the command from the display area
+            const command = inputArea.textContent.trim(); //get command
             processCommand(command);
-            userInput.value = ''; // Clear the hidden input field
-            inputArea.textContent = ''; // Clear the displayed input
+            userInput.value = '';
+            inputArea.textContent = '';
         } else if (event.key === 'Backspace') {
-            inputArea.textContent = inputArea.textContent.slice(0, -1); // Remove last character
-        } else if (event.key.length === 1) { // Only add visible characters
+            inputArea.textContent = inputArea.textContent.slice(0, -1);
+        } else if (event.key.length === 1) {
             inputArea.textContent += event.key;
         }
 
-        // Prevent any default behavior (like moving the cursor)
         event.preventDefault();
     }
 
     function typeMessage(message, speed, callback) {
         let i = 0;
-        isTyping = true; // Set typing flag to true
-
+        isTyping = true;
         function type() {
             if (i < message.length) {
-                // Append character to the output
                 const lastChild = outputDiv.lastElementChild;
                 lastChild.innerHTML += message[i];
-                scrollToBottom(); // Ensure the page scrolls to the bottom
+                scrollToBottom();
                 i++;
                 setTimeout(type, speed);
             } else {
-                // Add a new line after the message is finished
-                outputDiv.innerHTML += '<div></div>'; // Add new line
-                scrollToBottom(); // Ensure the page scrolls to the bottom
-                isTyping = false; // Set typing flag to false
+                outputDiv.innerHTML += '<div></div>';
+                scrollToBottom();
+                isTyping = false;
                 if (callback) {
-                    callback(); // Call the callback function once typing is complete
+                    callback();
                 }
             }
         }
 
-        // Add a new line to start
-        outputDiv.innerHTML += '<div></div>'; // Add initial empty line
-        scrollToBottom(); // Ensure the page scrolls to the bottom
+        outputDiv.innerHTML += '<div></div>';
+        scrollToBottom();
         type();
     }
 
     function scrollToBottom() {
-        outputDiv.scrollTop = outputDiv.scrollHeight; // Scroll to the bottom of the output div
+        outputDiv.scrollTop = outputDiv.scrollHeight;
     }
 
     function processCommand(input) {
         let response = '';
 
-        if (input === 'look') {
-            response = `You see: ${map.get().join(', ')}`;
+        if (input === 'step') {
+            map.step();
+            response = `now at (${map.position.join(', ')}).`;
         } else if (input === 'turn left') {
             map.turn('left');
-            response = `Turned left. Now facing ${map.direction}.`;
+            response = `now facing ${map.direction}.`;
         } else if (input === 'turn right') {
             map.turn('right');
-            response = `Turned right. Now facing ${map.direction}.`;
-        } else if (input === 'step') {
-            map.step(); // Move one step in the current direction
-            response = `Stepped forward. Now at position ${map.position.join(', ')}. You see: ${map.get().join(', ')}`;
+            response = `now facing ${map.direction}.`;
+        } else if (input === 'help') {
+            response = `"step": go forward\n"turn left"/"turn right": change direction\n"open": open doors\n"inspect": get more info on object`;
         } else {
             response = 'I don\'t understand that command.';
         }
 
-        // Append the command and response to the output
-        outputDiv.innerHTML += `<div>$ ${input}</div>`; // Print the command
-        typeMessage(response, typingSpeed); // Print the response with typing effect
+        outputDiv.innerHTML += `<div>$ ${input}</div>`;
+        typeMessage(response, typingSpeed);
     }
 };
